@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zynesti - Premium Lingerie</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .top-bar {
+            background: #BE2F64;
+            color: white;
+            padding: 8px 0;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .top-bar.sticky-hidden {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+
+        .top-bar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .top-bar-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .whatsapp-link {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: opacity 0.3s ease;
+        }
+
+        .whatsapp-link:hover {
+            opacity: 0.8;
+        }
+
+        .header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .header.sticky {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        .header.sticky .header-container {
+            padding: 12px 20px;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            transition: padding 0.3s ease;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 600;
+            color: #BE2F64;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .header.sticky .logo {
+            font-size: 28px;
+        }
+
+        .logo:hover {
+            opacity: 0.8;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-link {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            position: relative;
+            padding: 10px 0;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #BE2F64;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #BE2F64;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            border-radius: 8px;
+            padding: 20px 0;
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+
+        .nav-item:hover .dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: block;
+            padding: 12px 25px;
+            color: #333;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-item:hover {
+            background: #f8f9fa;
+            color: #BE2F64;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: #333;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .action-btn:hover {
+            background: #f8f9fa;
+            color: #BE2F64;
+        }
+
+        .action-btn:focus {
+            outline: 2px solid #BE2F64;
+            outline-offset: 2px;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #BE2F64;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-input {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border: 2px solid #BE2F64;
+            border-radius: 25px;
+            padding: 10px 20px;
+            width: 300px;
+            font-size: 14px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1002;
+        }
+
+        .search-input.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(5px);
+        }
+
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 4px 15px rgba(190, 47, 100, 0.3);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+            color: #333;
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: white;
+            z-index: 2000;
+            padding: 20px;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+
+        .mobile-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .mobile-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .mobile-nav {
+            list-style: none;
+        }
+
+        .mobile-nav-item {
+            margin-bottom: 10px;
+        }
+
+        .mobile-nav-link {
+            display: block;
+            padding: 15px 0;
+            color: #333;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 500;
+            border-bottom: 1px solid #f0f0f0;
+            transition: color 0.3s ease;
+        }
+
+        .mobile-nav-link:hover {
+            color: #BE2F64;
+        }
+
+        .mobile-submenu {
+            list-style: none;
+            padding-left: 20px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .mobile-submenu.active {
+            display: block;
+        }
+
+        .mobile-submenu-item {
+            margin-bottom: 5px;
+        }
+
+        .mobile-submenu-link {
+            display: block;
+            padding: 10px 0;
+            color: #666;
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .mobile-submenu-link:hover {
+            color: #BE2F64;
+        }
+
+        .mobile-actions {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 20px;
+        }
+
+        .content {
+            margin-top: 100px;
+            padding: 40px 20px;
+            text-align: center;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .nav, .header-actions {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .top-bar-container {
+                padding: 0 15px;
+            }
+
+            .top-bar-left {
+                font-size: 12px;
+            }
+
+            .header-container {
+                padding: 15px;
+            }
+
+            .logo {
+                font-size: 24px;
+            }
+
+            .header.sticky .logo {
+                font-size: 22px;
+            }
+
+            .content {
+                margin-top: 80px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .top-bar-left {
+                display: none;
+            }
+
+            .search-input {
+                width: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar" id="topBar">
+        <div class="top-bar-container">
+            <div class="top-bar-left">Free shipping over Rs.3000</div>
+            <div class="top-bar-right">
+                <span>+92 300 1234567</span>
+                <a href="https://wa.me/923001234567" class="whatsapp-link" target="_blank" rel="noopener">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Header -->
+    <header class="header" id="header">
+        <div class="header-container">
+            <!-- Logo -->
+            <a href="/" class="logo">Zynesti</a>
+
+            <!-- Desktop Navigation -->
+            <nav class="nav" role="navigation" aria-label="Main navigation">
+                <div class="nav-item">
+                    <a href="/" class="nav-link">Home</a>
+                </div>
+                <div class="nav-item">
+                    <a href="/shop" class="nav-link" aria-haspopup="true" aria-expanded="false">Shop</a>
+                    <div class="dropdown" role="menu">
+                        <a href="/shop/bras" class="dropdown-item" role="menuitem">Bras</a>
+                        <a href="/shop/panties" class="dropdown-item" role="menuitem">Panties</a>
+                        <a href="/shop/nightwear" class="dropdown-item" role="menuitem">Nightwear</a>
+                        <a href="/shop/shapewear" class="dropdown-item" role="menuitem">Shapewear</a>
+                        <a href="/shop/accessories" class="dropdown-item" role="menuitem">Accessories</a>
+                    </div>
+                </div>
+                <div class="nav-item">
+                    <a href="/about" class="nav-link">About</a>
+                </div>
+                <div class="nav-item">
+                    <a href="/blog" class="nav-link">Blog</a>
+                </div>
+                <div class="nav-item">
+                    <a href="/contact" class="nav-link">Contact</a>
+                </div>
+                <div class="nav-item">
+                    <a href="/faqs" class="nav-link">FAQs</a>
+                </div>
+            </nav>
+
+            <!-- Desktop Header Actions -->
+            <div class="header-actions">
+                <div class="search-container">
+                    <button class="action-btn" id="searchBtn" aria-label="Search" aria-expanded="false">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <input type="search" class="search-input" id="searchInput" placeholder="Search products..." aria-label="Search products">
+                </div>
+                <button class="action-btn" aria-label="Wishlist">
+                    <i class="fas fa-heart"></i>
+                </button>
+                <button class="action-btn" aria-label="Account">
+                    <i class="fas fa-user"></i>
+                </button>
+                <button class="action-btn" aria-label="Shopping cart">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-count">2</span>
+                </button>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu" aria-expanded="false">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu" role="dialog" aria-label="Mobile navigation menu" aria-hidden="true">
+        <div class="mobile-menu-header">
+            <a href="/" class="logo">Zynesti</a>
+            <button class="mobile-close" id="mobileClose" aria-label="Close menu">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <nav role="navigation" aria-label="Mobile navigation">
+            <ul class="mobile-nav">
+                <li class="mobile-nav-item">
+                    <a href="/" class="mobile-nav-link">Home</a>
+                </li>
+                <li class="mobile-nav-item">
+                    <a href="/shop" class="mobile-nav-link" id="mobileShopToggle">Shop <i class="fas fa-chevron-down"></i></a>
+                    <ul class="mobile-submenu" id="mobileSubmenu">
+                        <li class="mobile-submenu-item">
+                            <a href="/shop/bras" class="mobile-submenu-link">Bras</a>
+                        </li>
+                        <li class="mobile-submenu-item">
+                            <a href="/shop/panties" class="mobile-submenu-link">Panties</a>
+                        </li>
+                        <li class="mobile-submenu-item">
+                            <a href="/shop/nightwear" class="mobile-submenu-link">Nightwear</a>
+                        </li>
+                        <li class="mobile-submenu-item">
+                            <a href="/shop/shapewear" class="mobile-submenu-link">Shapewear</a>
+                        </li>
+                        <li class="mobile-submenu-item">
+                            <a href="/shop/accessories" class="mobile-submenu-link">Accessories</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="mobile-nav-item">
+                    <a href="/about" class="mobile-nav-link">About</a>
+                </li>
+                <li class="mobile-nav-item">
+                    <a href="/blog" class="mobile-nav-link">Blog</a>
+                </li>
+                <li class="mobile-nav-item">
+                    <a href="/contact" class="mobile-nav-link">Contact</a>
+                </li>
+                <li class="mobile-nav-item">
+                    <a href="/faqs" class="mobile-nav-link">FAQs</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="mobile-actions">
+            <button class="action-btn" aria-label="Wishlist">
+                <i class="fas fa-heart"></i>
+            </button>
+            <button class="action-btn" aria-label="Account">
+                <i class="fas fa-user"></i>
+            </button>
+            <button class="action-btn" aria-label="Shopping cart">
+                <i class="fas fa-shopping-bag"></i>
+                <span class="cart-count">2</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Demo Content -->
+    <div class="content">
+        <h1>Welcome to Zynesti</h1>
+        <p>Scroll down to see the sticky header behavior...</p>
+        <div style="height: 2000px; background: linear-gradient(to bottom, #f8f9fa, #e9ecef); margin-top: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #666;">
+            <p>Demo content area</p>
+        </div>
+    </div>
+
+    <script>
+        // Sticky header functionality
+        let lastScrollTop = 0;
+        const header = document.getElementById('header');
+        const topBar = document.getElementById('topBar');
+        
+        window.addEventListener('scroll', function() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollTop > 100) {
+                header.classList.add('sticky');
+                topBar.classList.add('sticky-hidden');
+            } else {
+                header.classList.remove('sticky');
+                topBar.classList.remove('sticky-hidden');
+            }
+            
+            lastScrollTop = scrollTop;
+        });
+
+        // Search functionality
+        const searchBtn = document.getElementById('searchBtn');
+        const searchInput = document.getElementById('searchInput');
+        
+        searchBtn.addEventListener('click', function() {
+            const isActive = searchInput.classList.contains('active');
+            if (isActive) {
+                searchInput.classList.remove('active');
+                searchBtn.setAttribute('aria-expanded', 'false');
+            } else {
+                searchInput.classList.add('active');
+                searchBtn.setAttribute('aria-expanded', 'true');
+                setTimeout(() => searchInput.focus(), 300);
+            }
+        });
+
+        // Close search when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.search-container')) {
+                searchInput.classList.remove('active');
+                searchBtn.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // Mobile menu functionality
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileClose = document.getElementById('mobileClose');
+        const mobileShopToggle = document.getElementById('mobileShopToggle');
+        const mobileSubmenu = document.getElementById('mobileSubmenu');
+
+        function openMobileMenu() {
+            mobileMenu.classList.add('active');
+            mobileMenu.setAttribute('aria-hidden', 'false');
+            mobileMenuBtn.setAttribute('aria-expanded', 'true');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMobileMenu() {
+            mobileMenu.classList.remove('active');
+            mobileMenu.setAttribute('aria-hidden', 'true');
+            mobileMenuBtn.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
+        }
+
+        mobileMenuBtn.addEventListener('click', openMobileMenu);
+        mobileClose.addEventListener('click', closeMobileMenu);
+
+        // Close mobile menu when clicking outside
+        mobileMenu.addEventListener('click', function(e) {
+            if (e.target === mobileMenu) {
+                closeMobileMenu();
+            }
+        });
+
+        // Mobile shop submenu toggle
+        mobileShopToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            const isActive = mobileSubmenu.classList.contains('active');
+            if (isActive) {
+                mobileSubmenu.classList.remove('active');
+            } else {
+                mobileSubmenu.classList.add('active');
+            }
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                // Close search
+                if (searchInput.classList.contains('active')) {
+                    searchInput.classList.remove('active');
+                    searchBtn.setAttribute('aria-expanded', 'false');
+                }
+                // Close mobile menu
+                if (mobileMenu.classList.contains('active')) {
+                    closeMobileMenu();
+                }
+            }
+        });
+
+        // Dropdown keyboard navigation
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            const link = item.querySelector('.nav-link');
+            const dropdown = item.querySelector('.dropdown');
+            
+            if (dropdown) {
+                link.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        const isExpanded = link.getAttribute('aria-expanded') === 'true';
+                        link.setAttribute('aria-expanded', !isExpanded);
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
